@@ -4,7 +4,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 import sklearn.metrics as sm
-import db_setup
+import bat
 import os
 
 def dataset():
@@ -22,7 +22,7 @@ def dataset():
 	return X, y
 
 def model(X, y):
-	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=0) # rs = 42
+	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.68, random_state=5) # rs = 42
 	kn = KNeighborsClassifier(n_neighbors=1) #
 	kn.fit(X_train,y_train.values.ravel())
 
@@ -30,13 +30,14 @@ def model(X, y):
 	confusion_matrix = sm.confusion_matrix(y_test, y_pred)
 	accuracy = kn.score(X_test,y_test.values.ravel())
 	print(accuracy)
-	print(confusion_matrix)
+	# print(confusion_matrix)
 
 	# convert arrays or list to json format before passing
-	db_setup.update_db(accuracy = accuracy) # pass keyword arguments to store in db
+	bat.signal(test_size = 0.68, n_neighbors = 1, random_state = 5,
+					   accuracy = accuracy) # pass keyword arguments to store in db
 
-	with open('../model/model1.pkl','wb') as f:
-		pickle.dump(kn, f)
+	# with open('../model/model1.pkl','wb') as f:
+	# 	pickle.dump(kn, f)
 
 if __name__ == '__main__':
 	X, y = dataset()
