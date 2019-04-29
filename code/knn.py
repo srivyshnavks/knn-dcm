@@ -22,19 +22,19 @@ def dataset():
 	return X, y
 
 def model(X, y):
-	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.68, random_state=5) # rs = 42
-	kn = KNeighborsClassifier(n_neighbors=1) #
+	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.30, random_state=42) # rs = 42
+	kn = KNeighborsClassifier(n_neighbors=3) #
 	kn.fit(X_train,y_train.values.ravel())
 
 	y_pred = kn.predict(X_test)
 	confusion_matrix = sm.confusion_matrix(y_test, y_pred)
 	accuracy = kn.score(X_test,y_test.values.ravel())
-	print(accuracy)
+	# print(accuracy)
 	# print(confusion_matrix)
 
 	# convert arrays or list to json format before passing
-	bat.signal(test_size = 0.68, n_neighbors = 1, random_state = 5,
-					   accuracy = accuracy) # pass keyword arguments to store in db
+	bat.signal(test_size = 0.30, n_neighbors = 3, random_state = 42,
+			   object = kn, accuracy = accuracy) # pass keyword arguments to store in db
 
 	# with open('../model/model1.pkl','wb') as f:
 	# 	pickle.dump(kn, f)
